@@ -3,7 +3,7 @@ defmodule ProviderWeb.UserSettingsLiveTest do
 
   alias Provider.Accounts
   import Phoenix.LiveViewTest
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

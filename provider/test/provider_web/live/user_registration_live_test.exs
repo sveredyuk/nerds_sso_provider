@@ -2,7 +2,7 @@ defmodule ProviderWeb.UserRegistrationLiveTest do
   use ProviderWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do

@@ -2,7 +2,7 @@ defmodule ProviderWeb.UserLoginLiveTest do
   use ProviderWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   describe "Log in page" do
     test "renders log in page", %{conn: conn} do

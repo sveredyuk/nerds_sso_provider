@@ -1,7 +1,7 @@
 defmodule ProviderWeb.UserSessionControllerTest do
   use ProviderWeb.ConnCase, async: true
 
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   setup do
     %{user: user_fixture()}

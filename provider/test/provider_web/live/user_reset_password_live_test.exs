@@ -2,7 +2,7 @@ defmodule ProviderWeb.UserResetPasswordLiveTest do
   use ProviderWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   alias Provider.Accounts
 

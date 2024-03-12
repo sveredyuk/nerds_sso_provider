@@ -1,17 +1,19 @@
 defmodule ProviderWeb.AuthorizationControllerTest do
   use ProviderWeb.ConnCase, async: true
 
-  alias Provider.{OauthAccessGrants.OauthAccessGrant, Repo, DataFixtures}
+  alias Provider.{OauthAccessGrants.OauthAccessGrant, Repo}
   alias ExOauth2Provider.Scopes
 
+  import Provider.DataFixtures
+
   setup %{conn: conn} do
-    user = DataFixtures.user_fixture()
+    user = user_fixture()
     conn = log_in_user(conn, user)
     {:ok, conn: conn, user: user}
   end
 
   test "new/2 renders authorization form", %{conn: conn, user: user} do
-    application = DataFixtures.application(%{user: user})
+    application = application_fixture(%{user: user})
 
     conn = get conn, ~p"/oauth/authorize", valid_params(application)
 
@@ -35,7 +37,7 @@ defmodule ProviderWeb.AuthorizationControllerTest do
   end
 
   test "new/2 redirects with error", %{conn: conn, user: user} do
-    application = DataFixtures.application(%{user: user})
+    application = application_fixture(%{user: user})
     conn = get conn, ~p"/oauth/authorize", %{client_id: application.uid, response_type: "other"}
 
     assert redirected_to(conn) ==
@@ -43,15 +45,15 @@ defmodule ProviderWeb.AuthorizationControllerTest do
   end
 
   test "new/2 with matching access token redirects when already shown", %{conn: conn, user: user} do
-    application = DataFixtures.application(%{user: user})
-    DataFixtures.access_token(%{user: user, application: application})
+    application = application_fixture(%{user: user})
+    access_token_fixture(%{user: user, application: application})
 
     conn = get conn, ~p"/oauth/authorize", valid_params(application)
     assert redirected_to(conn) == "https://example.com?code=#{last_grant_token()}"
   end
 
   test "create/2 redirects", %{conn: conn, user: user} do
-    application = DataFixtures.application(%{user: user})
+    application = application_fixture(%{user: user})
     conn = post conn, ~p"/oauth/authorize", valid_params(application)
     assert redirected_to(conn) == "https://example.com?code=#{last_grant_token()}"
 
@@ -59,7 +61,7 @@ defmodule ProviderWeb.AuthorizationControllerTest do
   end
 
   test "delete/2 redirects", %{conn: conn, user: user} do
-    application = DataFixtures.application(%{user: user})
+    application = application_fixture(%{user: user})
     conn = delete conn, ~p"/oauth/authorize", valid_params(application)
 
     assert redirected_to(conn) ==

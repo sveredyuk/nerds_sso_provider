@@ -4,7 +4,7 @@ defmodule ProviderWeb.UserAuthTest do
   alias Phoenix.LiveView
   alias Provider.Accounts
   alias ProviderWeb.UserAuth
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
 
   @remember_me_cookie "_provider_web_user_remember_me"
 

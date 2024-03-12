@@ -3,7 +3,7 @@ defmodule Provider.AccountsTest do
 
   alias Provider.Accounts
 
-  import Provider.AccountsFixtures
+  import Provider.DataFixtures
   alias Provider.Accounts.{User, UserToken}
 
   describe "get_user_by_email/1" do
