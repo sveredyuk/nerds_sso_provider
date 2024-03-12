@@ -69,6 +69,12 @@ defmodule ProviderWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
+
+    scope "/oauth/authorize" do
+      get "/", AuthorizationController, :new
+      post "/", AuthorizationController, :create
+      delete "/", AuthorizationController, :delete
+    end
   end
 
   scope "/", ProviderWeb do
