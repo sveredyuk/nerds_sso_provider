@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :provider, Provider.Repo,
-  username: "postgres",
-  password: "postgres",
+  # username: "postgres",
+  # password: "postgres",
   hostname: "localhost",
   database: "provider_dev",
   stacktrace: true,
