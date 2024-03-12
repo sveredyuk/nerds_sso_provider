@@ -7,20 +7,39 @@ defmodule ProviderWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {ProviderWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
   end
 
+  pipeline :provider_root do
+    plug :put_root_layout, html: {ProviderWeb.Layouts, :root}
+  end
+
+  pipeline :client_root do
+    plug :put_root_layout, html: {ProviderWeb.Layouts, :client}
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
+
+    scope "/oauth", ProviderWeb do
+      post "/token", TokenController, :create
+      post "/revoke", TokenController, :revoke
+    end
   end
 
   scope "/", ProviderWeb do
-    pipe_through :browser
+    pipe_through [:browser, :provider_root]
 
     get "/", PageController, :home
+  end
+
+  scope "/client", ClientWeb do
+    pipe_through [:browser, :client_root]
+
+    live "/", ClientLive, :index
+    live "/oauth2/callback", ClientCallbackLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -48,7 +67,7 @@ defmodule ProviderWeb.Router do
   ## Authentication routes
 
   scope "/", ProviderWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
+    pipe_through [:browser, :provider_root, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{ProviderWeb.UserAuth, :redirect_if_user_is_authenticated}] do
@@ -62,7 +81,7 @@ defmodule ProviderWeb.Router do
   end
 
   scope "/", ProviderWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :provider_root, :require_authenticated_user]
 
     live_session :require_authenticated_user,
       on_mount: [{ProviderWeb.UserAuth, :ensure_authenticated}] do
@@ -78,7 +97,7 @@ defmodule ProviderWeb.Router do
   end
 
   scope "/", ProviderWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :provider_root]
 
     delete "/users/log_out", UserSessionController, :delete
 

@@ -59,7 +59,8 @@ defmodule Provider.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:ex_oauth2_provider, "~> 0.5.7"}
+      {:ex_oauth2_provider, "~> 0.5.7"},
+      {:req, "~> 0.4.13"}
     ]
   end
 
